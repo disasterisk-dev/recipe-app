@@ -1,0 +1,40 @@
+{
+  "name": "TanStack Start + Firebase + Claude Code",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+
+  "runArgs": ["--env-file", "${localWorkspaceFolder}/.env.local"],
+
+  "mounts": [
+    // Keep node_modules inside the container — prevents host binaries overwriting Linux ones
+    "source=recipe-app-node-modules,target=/workspace/node_modules,type=volume",
+    "source=recipe-app-bun-cache,target=/root/.bun/install/cache,type=volume",
+    "source=recipe-app-bash-history,target=/root/.bash_history,type=volume"
+  ],
+
+  // Runs once after the container is first created
+  "postCreateCommand": "bun install",
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["esbenp.prettier-vscode", "anthropic.claude-code"],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "ts.tsdk.path": "node_modules/typescript/lib",
+        "tailwindCSS.experimental.classRegex": [
+          ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+          ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+        ]
+      }
+    }
+  }
+}
