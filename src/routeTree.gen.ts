@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SignupIndexRouteImport } from './routes/signup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
-./lib/types / users / $userId.tsx
+
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
