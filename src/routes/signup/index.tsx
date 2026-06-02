@@ -1,4 +1,6 @@
 import { SignupForm } from "@/components/signup-form"
+import { Leaf01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/signup/")({
@@ -11,7 +13,8 @@ function SignupPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <a href="#" className="flex items-center gap-2 font-medium">
-            Acme Inc.
+            <HugeiconsIcon icon={Leaf01Icon} size={24} color="var(--primary)" />
+            Recipeat
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">
@@ -22,7 +25,7 @@ function SignupPage() {
       </div>
       <div className="relative hidden bg-muted lg:block">
         <img
-          src="/placeholder.svg"
+          src="/splash.jpg"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
