@@ -22,10 +22,11 @@ export function SignupForm({ className }: { className?: string }) {
     onSubmit: async ({ value }) => {
       setServerError(null)
       try {
-        await authService.signUp(value.email, value.password)
-        await userService.createUser({
+        const { user } = await authService.signUp(value.email, value.password)
+        await userService.createUser(user.uid, {
           name: value.name,
-          emailAddress: value.email,
+          emailAdress: value.email,
+          preferences: null,
         })
         navigate({ to: "/" })
       } catch (err: unknown) {

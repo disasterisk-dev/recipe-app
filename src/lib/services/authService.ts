@@ -2,9 +2,10 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
-    onAuthStateChanged,
-    type User,
+    onAuthStateChanged
+
 } from 'firebase/auth'
+import type { User } from 'firebase/auth';
 import { auth } from '@/lib/firebase'
 
 export const authService = {

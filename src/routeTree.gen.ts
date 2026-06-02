@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SignupIndexRouteImport } from './routes/signup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as UsersNotFoundRouteImport } from './routes/users/notFound'
+import { Route as UsersUserIdRouteImport } from './routes/users/$userId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,33 +30,57 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsersNotFoundRoute = UsersNotFoundRouteImport.update({
+  id: '/users/notFound',
+  path: '/users/notFound',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UsersUserIdRoute = UsersUserIdRouteImport.update({
+  id: '/users/$userId',
+  path: '/users/$userId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/users/$userId': typeof UsersUserIdRoute
+  '/users/notFound': typeof UsersNotFoundRoute
   '/login/': typeof LoginIndexRoute
   '/signup/': typeof SignupIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/users/$userId': typeof UsersUserIdRoute
+  '/users/notFound': typeof UsersNotFoundRoute
   '/login': typeof LoginIndexRoute
   '/signup': typeof SignupIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/users/$userId': typeof UsersUserIdRoute
+  '/users/notFound': typeof UsersNotFoundRoute
   '/login/': typeof LoginIndexRoute
   '/signup/': typeof SignupIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login/' | '/signup/'
+  fullPaths: '/' | '/users/$userId' | '/users/notFound' | '/login/' | '/signup/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup'
-  id: '__root__' | '/' | '/login/' | '/signup/'
+  to: '/' | '/users/$userId' | '/users/notFound' | '/login' | '/signup'
+  id:
+    | '__root__'
+    | '/'
+    | '/users/$userId'
+    | '/users/notFound'
+    | '/login/'
+    | '/signup/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  UsersUserIdRoute: typeof UsersUserIdRoute
+  UsersNotFoundRoute: typeof UsersNotFoundRoute
   LoginIndexRoute: typeof LoginIndexRoute
   SignupIndexRoute: typeof SignupIndexRoute
 }
@@ -82,11 +108,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/users/notFound': {
+      id: '/users/notFound'
+      path: '/users/notFound'
+      fullPath: '/users/notFound'
+      preLoaderRoute: typeof UsersNotFoundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/users/$userId': {
+      id: '/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof UsersUserIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  UsersUserIdRoute: UsersUserIdRoute,
+  UsersNotFoundRoute: UsersNotFoundRoute,
   LoginIndexRoute: LoginIndexRoute,
   SignupIndexRoute: SignupIndexRoute,
 }
