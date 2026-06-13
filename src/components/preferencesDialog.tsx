@@ -1,4 +1,4 @@
-import { authService } from "@/lib/services/authService"
+import { AuthService } from "@/lib/services/authService"
 import { useState } from "react"
 import {
   Dialog,
@@ -16,7 +16,7 @@ import { Label } from "./ui/label"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Add, Minus } from "@hugeicons/core-free-icons"
 import { Input } from "./ui/input"
-import { userService } from "@/lib/services/userService"
+import { UserService } from "@/lib/services/userService"
 import { useForm } from "@tanstack/react-form"
 
 const PreferencedDialog = () => {
@@ -27,7 +27,7 @@ const PreferencedDialog = () => {
     onSubmit: async ({ value }) => {
       setServerError(null)
       try {
-        await userService.updatePrefs(authService.getCurrentUser()!.uid, {
+        await UserService.updatePrefs(AuthService.getCurrentUser()!.uid, {
           breakfastCount: value.breakfast,
           lunchCount: value.lunch,
           dinnerCount: value.dinner,
@@ -61,7 +61,7 @@ const PreferencedDialog = () => {
             </DialogDescription>
           </DialogHeader>
 
-          <FieldGroup>
+          <FieldGroup className="my-4">
             <form.Field
               name="breakfast"
               children={(field) => {
@@ -106,7 +106,9 @@ const PreferencedDialog = () => {
             />
           </FieldGroup>
           <DialogClose asChild>
-            <Button type="submit">Save</Button>
+            <Button type="submit" className="w-full">
+              Save
+            </Button>
           </DialogClose>
           {serverError && <span>{serverError}</span>}
         </form>

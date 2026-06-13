@@ -1,48 +1,47 @@
-import { useState } from "react"
-import { useNavigate } from "@tanstack/react-router"
-import { useForm } from "@tanstack/react-form"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { authService } from "@/lib/services/authService"
-import { userService } from "@/lib/services/userService"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { authService, userService } from "@/lib/services/";
 
 export function SignupForm({ className }: { className?: string }) {
-  const navigate = useNavigate()
-  const [serverError, setServerError] = useState<string | null>(null)
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const form = useForm({
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
     onSubmit: async ({ value }) => {
-      setServerError(null)
+      setServerError(null);
       try {
-        const { user } = await authService.signUp(value.email, value.password)
+        const { user } = await authService.signUp(value.email, value.password);
         await userService.createUser(user.uid, {
           name: value.name,
-          emailAdress: value.email,
+          emailAddress: value.email,
           preferences: null,
-        })
-        navigate({ to: "/" })
+        });
+        navigate({ to: "/" });
       } catch (err: unknown) {
         setServerError(
           err instanceof Error ? err.message : "Failed to create account"
-        )
+        );
       }
     },
-  })
+  });
 
   return (
     <form
       className={cn("flex flex-col gap-6", className)}
       onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
+        e.preventDefault();
+        form.handleSubmit();
       }}
     >
       <FieldGroup>
@@ -129,10 +128,10 @@ export function SignupForm({ className }: { className?: string }) {
           validators={{
             onChangeListenTo: ["password"],
             onChange: ({ value, fieldApi }) => {
-              const password = fieldApi.form.getFieldValue("password")
+              const password = fieldApi.form.getFieldValue("password");
               return value.length > 0 && value !== password
                 ? "Passwords do not match"
-                : undefined
+                : undefined;
             },
           }}
         >
@@ -154,14 +153,16 @@ export function SignupForm({ className }: { className?: string }) {
                   {field.state.meta.errors[0]}
                 </FieldDescription>
               ) : (
-                <FieldDescription>Please confirm your password.</FieldDescription>
+                <FieldDescription>
+                  Please confirm your password.
+                </FieldDescription>
               )}
             </Field>
           )}
         </form.Field>
 
         {serverError && (
-          <FieldDescription className="text-destructive text-center">
+          <FieldDescription className="text-center text-destructive">
             {serverError}
           </FieldDescription>
         )}
@@ -186,5 +187,5 @@ export function SignupForm({ className }: { className?: string }) {
         </Field>
       </FieldGroup>
     </form>
-  )
+  );
 }

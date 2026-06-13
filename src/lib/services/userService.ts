@@ -1,24 +1,46 @@
-import { db } from "@/lib/firebase"
-import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore"
-import { converter } from "../utils"
-import type { User, UserPrefs } from "@/lib/types/user"
+import { db } from "@/lib/firebase";
+import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { converter } from "../utils";
+import type { User, UserPrefs } from "@/lib/types/user";
 
-export const userService = {
+export class UserService {
+  private _currentUser: User | null = null;
 
-    async getUser(id: string): Promise<User | null> {
-        const snap = await getDoc(doc(userCollection, id))
-        return snap.exists() ? snap.data() : null // already typed as User
-    },
+  async getUser(id: string): Promise<User | null> {
+    const snap = await getDoc(doc(userCollection, id));
+    return snap.exists() ? snap.data() : null; // already typed as User
+  }
 
-    async createUser(id: string, data: Omit<User, "id">): Promise<void> {
-        await setDoc(doc(userCollection, id), data as User)
-    },
-
-    async updatePrefs(userId: string, data: UserPrefs): Promise<void> {
-        return await updateDoc(doc(userCollection, userId), { preferences: data });
+  async setCurrentUser(uid: string | null) {
+    if (!uid) {
+      this._currentUser = null;
+      return;
     }
+    this._currentUser = await this.getUser(uid);
+  }
+
+  async createUser(id: string, data: Omit<User, "id">): Promise<void> {
+    await setDoc(doc(userCollection, id), data as User);
+  }
+
+  async updatePrefs(userId: string, data: UserPrefs): Promise<void> {
+    return await updateDoc(doc(userCollection, userId), { preferences: data });
+  }
+
+  get currentUser(): User | null {
+    return this._currentUser;
+  }
+
+  get userInitials() {
+    const names = this._currentUser?.name.split(" ") ?? [];
+    let initials = "";
+
+    names.forEach((name) => {
+      initials = initials.concat(name.split("")[0].toUpperCase());
+    });
+
+    return initials;
+  }
 }
 
-const userCollection = collection(db, "users").withConverter(
-    converter<User>()
-)
+const userCollection = collection(db, "users").withConverter(converter<User>());

@@ -1,12 +1,12 @@
-import { Navigate } from "@tanstack/react-router"
-import { useAuth } from "../context/authContext"
+import { Navigate } from "@tanstack/react-router";
+import { useAuth } from "../context/authContext";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth()
+  const { firebaseUser: user, loading } = useAuth();
 
-  if (loading) return null // or a spinner
+  if (loading) return null; // or a spinner
 
-  if (!user) return <Navigate to="/login" />
+  if (!user) return <Navigate to="/login" />;
 
-  return <>{children}</>
+  return <>{children}</>;
 }

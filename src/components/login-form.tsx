@@ -1,40 +1,42 @@
-import { useState } from "react"
-import { useNavigate } from "@tanstack/react-router"
-import { useForm } from "@tanstack/react-form"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { authService } from "@/lib/services/authService"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { authService } from "@/lib/services";
 
 export function LoginForm({ className }: { className?: string }) {
-  const navigate = useNavigate()
-  const [serverError, setServerError] = useState<string | null>(null)
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const form = useForm({
     defaultValues: { email: "", password: "" },
     onSubmit: async ({ value }) => {
-      setServerError(null)
+      setServerError(null);
       try {
-        await authService.signIn(value.email, value.password)
-        navigate({ to: "/" })
+        await authService.signIn(value.email, value.password);
+        navigate({ to: "/" });
       } catch (err: unknown) {
-        setServerError(err instanceof Error ? err.message : "Failed to sign in")
+        setServerError(
+          err instanceof Error ? err.message : "Failed to sign in"
+        );
       }
     },
-  })
+  });
 
   return (
     <form
       className={cn("flex flex-col gap-6", className)}
       onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
+        e.preventDefault();
+        form.handleSubmit();
       }}
     >
       <FieldGroup>
@@ -112,5 +114,5 @@ export function LoginForm({ className }: { className?: string }) {
         </Field>
       </FieldGroup>
     </form>
-  )
+  );
 }
