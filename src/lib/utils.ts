@@ -39,7 +39,7 @@ export function getWeekRangeFromDate(now: DateTime, startOnDay: number) {
   // Luxon weekday: 1=Mon … 7=Sun, so convert
   const luxonTarget = startOnDay === 0 ? 7 : startOnDay;
   const diff = (today.weekday - luxonTarget + 7) % 7;
-  const from = today.minus({ days: diff }).toJSDate();
-  const to = today.minus({ days: diff - 6 }).toJSDate();
+  const from = today.minus({ days: diff }).setZone("UTC", { keepLocalTime: true }).toJSDate();
+  const to = today.minus({ days: diff - 6 }).setZone("UTC", { keepLocalTime: true }).toJSDate();
   return { from, to };
 }
