@@ -9,6 +9,7 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import { Spinner } from "@/components/ui/spinner";
 import Welcome from "@/components/welcome";
+import WeekMenu from "@/components/week-menu";
 
 export const Route = createFileRoute("/")({ component: App });
 
@@ -28,7 +29,7 @@ function App() {
               </header>
               <>
                 {!user.preferences && <Welcome />}
-                {user.preferences && <h1>ready</h1>}
+                {user.preferences && <WeekMenu />}
               </>
             </SidebarInset>
           </SidebarProvider>

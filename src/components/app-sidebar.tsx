@@ -24,6 +24,7 @@ import {
 } from "./ui/dropdown-menu";
 import { useAuth } from "@/lib/context/authContext";
 import PreferencedDialog from "./preferencesDialog";
+import { WeekSelectCalendar } from "./calendar";
 
 // This is sample data.
 const data = {
@@ -90,6 +91,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ))}
       </SidebarContent>
       <SidebarFooter>
+        <WeekSelectCalendar />
         <PreferencedDialog />
       </SidebarFooter>
       <SidebarRail />

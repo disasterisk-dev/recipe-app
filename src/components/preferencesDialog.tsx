@@ -18,24 +18,38 @@ import { Input } from "./ui/input";
 import { userService } from "@/lib/services";
 import { useForm } from "@tanstack/react-form";
 import { useAuth } from "@/lib/context/authContext";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import type { UserPrefs } from "@/lib/types/user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 const PreferencedDialog = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const { user } = useAuth();
 
+  const defaultValues: UserPrefs = {
+    breakfastCount: user?.preferences?.breakfastCount ?? 7,
+    lunchCount: user?.preferences?.lunchCount ?? 7,
+    dinnerCount: user?.preferences?.dinnerCount ?? 7,
+    startOnDay: "monday",
+  };
+
   const form = useForm({
-    defaultValues: {
-      breakfast: user?.preferences?.breakfastCount ?? 7,
-      lunch: user?.preferences?.lunchCount ?? 7,
-      dinner: user?.preferences?.dinnerCount ?? 7,
-    },
+    defaultValues: defaultValues,
     onSubmit: async ({ value }) => {
       setServerError(null);
       try {
         await userService.updatePrefs({
-          breakfastCount: value.breakfast,
-          lunchCount: value.lunch,
-          dinnerCount: value.dinner,
+          breakfastCount: value.breakfastCount,
+          lunchCount: value.lunchCount,
+          dinnerCount: value.dinnerCount,
+          startOnDay: value.startOnDay,
         });
       } catch (err: unknown) {
         setServerError(
@@ -68,7 +82,7 @@ const PreferencedDialog = () => {
 
           <FieldGroup className="my-4">
             <form.Field
-              name="breakfast"
+              name="breakfastCount"
               children={(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
@@ -82,7 +96,7 @@ const PreferencedDialog = () => {
               }}
             />
             <form.Field
-              name="lunch"
+              name="lunchCount"
               children={(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
@@ -96,7 +110,7 @@ const PreferencedDialog = () => {
               }}
             />
             <form.Field
-              name="dinner"
+              name="dinnerCount"
               children={(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
@@ -108,6 +122,36 @@ const PreferencedDialog = () => {
                   />
                 );
               }}
+            />
+            <form.Field
+              name="startOnDay"
+              children={(field) => (
+                <Field>
+                  <Label>Start Week On</Label>
+                  <Select
+                    onValueChange={(value) =>
+                      field.handleChange(value as UserPrefs["startOnDay"])
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={capitalizeFirstLetter(field.state.value)}
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="monday">Monday</SelectItem>
+                        <SelectItem value="tuesday">Tuesday</SelectItem>
+                        <SelectItem value="wednesday">Wednesday</SelectItem>
+                        <SelectItem value="thursday">Thursday</SelectItem>
+                        <SelectItem value="friday">Friday</SelectItem>
+                        <SelectItem value="saturday">Saturday</SelectItem>
+                        <SelectItem value="sunday">Sunday</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+              )}
             />
           </FieldGroup>
           <DialogClose asChild>
