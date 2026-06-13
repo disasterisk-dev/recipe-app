@@ -7,6 +7,7 @@ import type {
   DocumentData,
   WithFieldValue,
 } from "firebase/firestore";
+import type { DateTime } from "luxon";
 
 // Used for adding Tailwind classes to the existing ones in ShadCN components, traditional concatenation doesn't work
 export function cn(...inputs: ClassValue[]) {
@@ -30,4 +31,15 @@ export function converter<
 
 export function capitalizeFirstLetter(val: string) {
   return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
+
+export function getWeekRangeFromDate(now: DateTime, startOnDay: number) {
+  const today = now.startOf("day");
+  // Find the most recent occurrence of startOnDay (0=Sun … 6=Sat)
+  // Luxon weekday: 1=Mon … 7=Sun, so convert
+  const luxonTarget = startOnDay === 0 ? 7 : startOnDay;
+  const diff = (today.weekday - luxonTarget + 7) % 7;
+  const from = today.minus({ days: diff }).toJSDate();
+  const to = today.minus({ days: diff - 6 }).toJSDate();
+  return { from, to };
 }

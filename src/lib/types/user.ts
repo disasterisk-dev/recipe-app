@@ -21,12 +21,5 @@ export interface UserPrefs {
   breakfastCount: number;
   lunchCount: number;
   dinnerCount: number;
-  startOnDay:
-    | "monday"
-    | "tuesday"
-    | "wednesday"
-    | "thursday"
-    | "friday"
-    | "saturday"
-    | "sunday";
+  startOnDay: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }

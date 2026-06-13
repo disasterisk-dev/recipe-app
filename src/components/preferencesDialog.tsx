@@ -31,13 +31,23 @@ import { capitalizeFirstLetter } from "@/lib/utils";
 
 const PreferencedDialog = () => {
   const [serverError, setServerError] = useState<string | null>(null);
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
+
+  const weekdays = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
 
   const defaultValues: UserPrefs = {
     breakfastCount: user?.preferences?.breakfastCount ?? 7,
     lunchCount: user?.preferences?.lunchCount ?? 7,
     dinnerCount: user?.preferences?.dinnerCount ?? 7,
-    startOnDay: "monday",
+    startOnDay: user?.preferences?.startOnDay ?? 1,
   };
 
   const form = useForm({
@@ -51,6 +61,7 @@ const PreferencedDialog = () => {
           dinnerCount: value.dinnerCount,
           startOnDay: value.startOnDay,
         });
+        refreshUser();
       } catch (err: unknown) {
         setServerError(
           err instanceof Error ? err.message : "Failed to save preferences"
@@ -130,23 +141,25 @@ const PreferencedDialog = () => {
                   <Label>Start Week On</Label>
                   <Select
                     onValueChange={(value) =>
-                      field.handleChange(value as UserPrefs["startOnDay"])
+                      field.handleChange(
+                        parseInt(value) as 0 | 1 | 2 | 3 | 4 | 5 | 6
+                      )
                     }
                   >
                     <SelectTrigger>
                       <SelectValue
-                        placeholder={capitalizeFirstLetter(field.state.value)}
+                        placeholder={capitalizeFirstLetter(
+                          weekdays[field.state.value]
+                        )}
                       />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectItem value="monday">Monday</SelectItem>
-                        <SelectItem value="tuesday">Tuesday</SelectItem>
-                        <SelectItem value="wednesday">Wednesday</SelectItem>
-                        <SelectItem value="thursday">Thursday</SelectItem>
-                        <SelectItem value="friday">Friday</SelectItem>
-                        <SelectItem value="saturday">Saturday</SelectItem>
-                        <SelectItem value="sunday">Sunday</SelectItem>
+                        {weekdays.map((day, index) => (
+                          <SelectItem value={index.toString()}>
+                            {capitalizeFirstLetter(day)}
+                          </SelectItem>
+                        ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>

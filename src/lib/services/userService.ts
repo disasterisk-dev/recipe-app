@@ -1,7 +1,8 @@
 import { db } from "@/lib/firebase";
 import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { converter } from "../utils";
-import type { User, UserPrefs } from "@/lib/types/user";
+import { User } from "@/lib/types/user";
+import type { UserPrefs } from "@/lib/types/user";
 
 export class UserService {
   private _currentUser: User | null = null;
@@ -24,9 +25,16 @@ export class UserService {
   }
 
   async updatePrefs(data: UserPrefs): Promise<void> {
-    return await updateDoc(doc(userCollection, this._currentUser?.id), {
+    await updateDoc(doc(userCollection, this._currentUser?.id), {
       preferences: data,
     });
+    if (this._currentUser)
+      this._currentUser = new User(
+        this._currentUser.id,
+        this._currentUser.name,
+        this._currentUser.emailAddress,
+        data
+      );
   }
 
   get currentUser(): User | null {
