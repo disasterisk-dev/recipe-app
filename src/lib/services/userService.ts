@@ -23,8 +23,10 @@ export class UserService {
     await setDoc(doc(userCollection, id), data as User);
   }
 
-  async updatePrefs(userId: string, data: UserPrefs): Promise<void> {
-    return await updateDoc(doc(userCollection, userId), { preferences: data });
+  async updatePrefs(data: UserPrefs): Promise<void> {
+    return await updateDoc(doc(userCollection, this._currentUser?.id), {
+      preferences: data,
+    });
   }
 
   get currentUser(): User | null {

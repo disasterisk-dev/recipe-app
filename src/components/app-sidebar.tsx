@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -22,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useAuth } from "@/lib/context/authContext";
+import PreferencedDialog from "./preferencesDialog";
 
 // This is sample data.
 const data = {
@@ -77,7 +79,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenu>
                 {item.items.map((subItem) => (
                   <SidebarMenuItem key={subItem.title}>
-                    <SidebarMenuButton asChild isActive={subItem.isActive}>
+                    <SidebarMenuButton asChild>
                       <a href={subItem.url}>{subItem.title}</a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -87,6 +89,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <SidebarFooter>
+        <PreferencedDialog />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

@@ -6,7 +6,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (loading) return null; // or a spinner
 
-  if (!user) return <Navigate to="/login" />;
+  if (!user) return <Navigate to="/signup" />;
 
   return <>{children}</>;
 }

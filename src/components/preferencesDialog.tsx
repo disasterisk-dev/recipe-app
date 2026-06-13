@@ -1,5 +1,4 @@
-import { AuthService } from "@/lib/services/authService"
-import { useState } from "react"
+import { useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -8,37 +7,43 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog"
-import { FieldGroup, Field } from "./ui/field"
-import { Button } from "./ui/button"
-import { ButtonGroup } from "./ui/button-group"
-import { Label } from "./ui/label"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Add, Minus } from "@hugeicons/core-free-icons"
-import { Input } from "./ui/input"
-import { UserService } from "@/lib/services/userService"
-import { useForm } from "@tanstack/react-form"
+} from "./ui/dialog";
+import { FieldGroup, Field } from "./ui/field";
+import { Button } from "./ui/button";
+import { ButtonGroup } from "./ui/button-group";
+import { Label } from "./ui/label";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Add, Minus } from "@hugeicons/core-free-icons";
+import { Input } from "./ui/input";
+import { userService } from "@/lib/services";
+import { useForm } from "@tanstack/react-form";
+import { useAuth } from "@/lib/context/authContext";
 
 const PreferencedDialog = () => {
-  const [serverError, setServerError] = useState<string | null>(null)
+  const [serverError, setServerError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const form = useForm({
-    defaultValues: { breakfast: 7, lunch: 7, dinner: 7 },
+    defaultValues: {
+      breakfast: user?.preferences?.breakfastCount ?? 7,
+      lunch: user?.preferences?.lunchCount ?? 7,
+      dinner: user?.preferences?.dinnerCount ?? 7,
+    },
     onSubmit: async ({ value }) => {
-      setServerError(null)
+      setServerError(null);
       try {
-        await UserService.updatePrefs(AuthService.getCurrentUser()!.uid, {
+        await userService.updatePrefs({
           breakfastCount: value.breakfast,
           lunchCount: value.lunch,
           dinnerCount: value.dinner,
-        })
+        });
       } catch (err: unknown) {
         setServerError(
           err instanceof Error ? err.message : "Failed to save preferences"
-        )
+        );
       }
     },
-  })
+  });
 
   return (
     <Dialog>
@@ -48,8 +53,8 @@ const PreferencedDialog = () => {
       <DialogContent>
         <form
           onSubmit={(e) => {
-            e.preventDefault()
-            form.handleSubmit()
+            e.preventDefault();
+            form.handleSubmit();
           }}
         >
           <DialogHeader>
@@ -66,42 +71,42 @@ const PreferencedDialog = () => {
               name="breakfast"
               children={(field) => {
                 const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid
+                  field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
                   <PreferenceInput
                     field={field}
                     isInvalid={isInvalid}
                     label="Breakfasts per Week"
                   />
-                )
+                );
               }}
             />
             <form.Field
               name="lunch"
               children={(field) => {
                 const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid
+                  field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
                   <PreferenceInput
                     field={field}
                     isInvalid={isInvalid}
                     label="Lunches per Week"
                   />
-                )
+                );
               }}
             />
             <form.Field
               name="dinner"
               children={(field) => {
                 const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid
+                  field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
                   <PreferenceInput
                     field={field}
                     isInvalid={isInvalid}
                     label="Dinners per Week"
                   />
-                )
+                );
               }}
             />
           </FieldGroup>
@@ -114,15 +119,15 @@ const PreferencedDialog = () => {
         </form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default PreferencedDialog
+export default PreferencedDialog;
 
 interface InputProps {
-  field: any
-  isInvalid: boolean
-  label: string
+  field: any;
+  isInvalid: boolean;
+  label: string;
 }
 
 const PreferenceInput = (props: InputProps) => {
@@ -135,8 +140,8 @@ const PreferenceInput = (props: InputProps) => {
             type="button"
             variant={"secondary"}
             onClick={(_) => {
-              if (props.field.state.value == 0) return
-              props.field.handleChange(props.field.state.value - 1)
+              if (props.field.state.value == 0) return;
+              props.field.handleChange(props.field.state.value - 1);
             }}
           >
             <HugeiconsIcon icon={Minus} />{" "}
@@ -147,9 +152,9 @@ const PreferenceInput = (props: InputProps) => {
             value={props.field.state.value}
             onBlur={props.field.handleBlur}
             onChange={(e) => {
-              let result = Number.parseInt(e.target.value)
-              if (result.toString() == "NaN" || result < 0) result = 0
-              props.field.handleChange(result)
+              let result = Number.parseInt(e.target.value);
+              if (result.toString() == "NaN" || result < 0) result = 0;
+              props.field.handleChange(result);
             }}
             aria-invalid={props.isInvalid}
             placeholder="Login button not working on mobile"
@@ -160,8 +165,8 @@ const PreferenceInput = (props: InputProps) => {
             type="button"
             variant={"secondary"}
             onClick={(_) => {
-              if (props.field.state.value == 7) return
-              props.field.handleChange(props.field.state.value + 1)
+              if (props.field.state.value == 7) return;
+              props.field.handleChange(props.field.state.value + 1);
             }}
           >
             <HugeiconsIcon icon={Add} />{" "}
@@ -169,5 +174,5 @@ const PreferenceInput = (props: InputProps) => {
         </ButtonGroup>
       </Field>
     </>
-  )
-}
+  );
+};
