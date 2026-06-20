@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { userQueries } from "@/lib/queries/userQueries"
+import { userQueries } from "@/lib/queries/user-queries"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { ProtectedRoute } from "@/lib/helpers/protectedRoute"
+import { ProtectedRoute } from "@/lib/helpers/protected-route"
 
 export const Route = createFileRoute("/users/$userId")({
   component: RouteComponent,

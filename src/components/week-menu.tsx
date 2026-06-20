@@ -1,16 +1,15 @@
-import { format } from "date-fns";
-import { useMenu } from "@/lib/context/menuContext";
+import { useAuth } from "@/lib/context/authContext";
+import RecipeSheet from "./recipe-sheet";
 
 const WeekMenu = () => {
-  const { selectedDateRange } = useMenu();
+  const { user } = useAuth();
 
   return (
     <>
-      <h1>Menu</h1>
-      <h2>
-        {format(selectedDateRange?.from ?? new Date(), "dd MM yyyy")} -{" "}
-        {format(selectedDateRange?.to ?? new Date(), "dd MM yyyy")}
-      </h2>
+      <section>
+        <h1>Menu</h1>
+      </section>
+      <RecipeSheet />
     </>
   );
 };

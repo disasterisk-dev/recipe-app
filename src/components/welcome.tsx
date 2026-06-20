@@ -1,10 +1,10 @@
 import { useAuth } from "@/lib/context/authContext";
-import PreferencedDialog from "./preferencesDialog";
+import PreferencedDialog from "./preferences-dialog";
 
 const Welcome = () => {
   const { user } = useAuth();
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-4 p-6">
+    <div className="flex min-h-svh flex-col items-center justify-center gap-4">
       <h1 className="text-center font-medium">
         Let's get started{user ? ` , ${user.name}` : ""}!
       </h1>

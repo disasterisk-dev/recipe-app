@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
-import { AuthService } from "./authService";
-import { MenuService } from "./menuService";
-import { UserService } from "./userService";
+import { AuthService } from "./auth-service";
+import { MenuService } from "./menu-service";
+import { UserService } from "./user-service";
 import { getWeekRangeFromDate } from "../utils";
 
 class ServiceLocator {

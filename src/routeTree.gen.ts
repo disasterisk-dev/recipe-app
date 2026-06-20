@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SignupIndexRouteImport } from './routes/signup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
-import { Route as UsersNotFoundRouteImport } from './routes/users/notFound'
+import { Route as UsersNotFoundRouteImport } from './routes/users/not-found'
 import { Route as UsersUserIdRouteImport } from './routes/users/$userId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -31,8 +31,8 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const UsersNotFoundRoute = UsersNotFoundRouteImport.update({
-  id: '/users/notFound',
-  path: '/users/notFound',
+  id: '/users/not-found',
+  path: '/users/not-found',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UsersUserIdRoute = UsersUserIdRouteImport.update({
@@ -44,14 +44,14 @@ const UsersUserIdRoute = UsersUserIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/users/$userId': typeof UsersUserIdRoute
-  '/users/notFound': typeof UsersNotFoundRoute
+  '/users/not-found': typeof UsersNotFoundRoute
   '/login/': typeof LoginIndexRoute
   '/signup/': typeof SignupIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/users/$userId': typeof UsersUserIdRoute
-  '/users/notFound': typeof UsersNotFoundRoute
+  '/users/not-found': typeof UsersNotFoundRoute
   '/login': typeof LoginIndexRoute
   '/signup': typeof SignupIndexRoute
 }
@@ -59,20 +59,25 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/users/$userId': typeof UsersUserIdRoute
-  '/users/notFound': typeof UsersNotFoundRoute
+  '/users/not-found': typeof UsersNotFoundRoute
   '/login/': typeof LoginIndexRoute
   '/signup/': typeof SignupIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/users/$userId' | '/users/notFound' | '/login/' | '/signup/'
+  fullPaths:
+    | '/'
+    | '/users/$userId'
+    | '/users/not-found'
+    | '/login/'
+    | '/signup/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/users/$userId' | '/users/notFound' | '/login' | '/signup'
+  to: '/' | '/users/$userId' | '/users/not-found' | '/login' | '/signup'
   id:
     | '__root__'
     | '/'
     | '/users/$userId'
-    | '/users/notFound'
+    | '/users/not-found'
     | '/login/'
     | '/signup/'
   fileRoutesById: FileRoutesById
@@ -108,10 +113,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/users/notFound': {
-      id: '/users/notFound'
-      path: '/users/notFound'
-      fullPath: '/users/notFound'
+    '/users/not-found': {
+      id: '/users/not-found'
+      path: '/users/not-found'
+      fullPath: '/users/not-found'
       preLoaderRoute: typeof UsersNotFoundRouteImport
       parentRoute: typeof rootRouteImport
     }

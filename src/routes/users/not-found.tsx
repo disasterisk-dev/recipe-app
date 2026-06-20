@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { ProtectedRoute } from "@/lib/helpers/protectedRoute";
+import { ProtectedRoute } from "@/lib/helpers/protected-route";
 import { authService } from "@/lib/services";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/users/notFound")({
+export const Route = createFileRoute("/users/not-found")({
   component: RouteComponent,
 });
 

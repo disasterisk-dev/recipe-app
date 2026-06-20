@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useAuth } from "@/lib/context/authContext";
-import PreferencedDialog from "./preferencesDialog";
+import PreferencedDialog from "./preferences-dialog";
 import { WeekSelectCalendar } from "./calendar";
 
 // This is sample data.

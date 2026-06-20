@@ -1,0 +1,32 @@
+[
+  {
+    "label": "dev",
+    "command": "bun run dev",
+    "use_new_terminal": true
+  },
+  {
+    "label": "build",
+    "command": "bun run build"
+  },
+  {
+    "label": "preview",
+    "command": "bun run preview",
+    "use_new_terminal": true
+  },
+  {
+    "label": "test",
+    "command": "bun run test"
+  },
+  {
+    "label": "lint",
+    "command": "bun run lint"
+  },
+  {
+    "label": "format",
+    "command": "bun run format"
+  },
+  {
+    "label": "typecheck",
+    "command": "bun run typecheck"
+  }
+]
